@@ -1,4 +1,4 @@
 MyBackup
 ========
 
-A sort of time machine in linux.
+A small tool to backup your files in linux.
