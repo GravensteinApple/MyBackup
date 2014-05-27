@@ -1,0 +1,221 @@
+#!/bin/bash
+
+# settings and prework
+config_file="/usr/local/etc/MyBackup/mybackup.conf"
+
+if [ ! -e "$config_file" ]; then
+	echo "Please set up your configuration in $config_file"
+	exit 1
+fi
+
+source $config_file
+
+if [ ! -e "$backup" ]; then
+	echo "Please check your file path, cuz I cannot locate the files related to this backup process."
+	exit 1
+fi
+
+if [ ${backup%*/} = $backup ]; then
+	backup=${backup}/
+fi
+
+if [ ${target%*/} = $target ]; then
+	target=${target}/
+fi
+
+if [ ! -e "$target" ]; then
+	mkdir "$target"
+fi
+
+basename="MyBackup"
+
+general_usage()
+{
+	echo "========================================================"
+	echo "$basename is a small tool used to backup your files."
+	echo "--------------------------------------------------------"
+	echo "USAGE: $ mybackup [option]"
+	echo "OPTIONS:"
+	echo "--push"
+	echo "--status"
+	echo "--restore [backup_name]"
+	echo "--clean"
+	echo "--config"
+	echo "--automatic [on|off]"
+	echo "--help"
+	echo "--------------------------------------------------------"
+	echo "For more details"
+	echo "Read the documentation in /usr/local/share/doc/mybackup/"
+	echo "========================================================"
+}
+
+if [ $# -lt 1 ]; then
+	general_usage
+	exit 1
+fi
+
+# push operation
+if [ "$1" = "--push" ]; then
+
+	# date for this backup
+	date=`date "+%Y-%m-%dT%H_%M_%S"`
+
+	# check and create lockfile
+	if [ -f "${target}lockfile" ]; then
+		echo "Lockfile exists, backup stopped."
+		exit 2
+	else
+		touch ${target}lockfile
+	fi
+
+	# create folders if neccessary
+	if [ ! -e ${target}current ]; then
+		mkdir ${target}current
+	fi
+
+	# rsync
+	rsync \
+		--archive \
+		--xattrs \
+		--human-readable \
+		--delete \
+		--link-dest=${target}current \
+		--exclude-from $exclude \
+		$backup \
+		$target$date
+	
+	# backup complete
+	rm -rf "${target}current"
+	ln -s "$target$date" "${target}current"
+
+	echo "Backup file on $date has been installed successfully."
+
+	rm ${target}lockfile
+
+	count_backup=0
+	for i in `ls $target`; do
+		if [ "$i" != "current" ]; then
+			count_backup=$(($count_backup+1))
+
+			if [ -e "$target$i/.backup" ]; then
+				rm "$target$i/.backup"
+			fi
+		fi
+	done
+
+	if [ $count_backup -gt $number ]; then
+		for i in `ls $target`; do
+			rm -rf $target$i
+			echo "Backup file on $i has been removed because it reaches the limit."
+			break
+		done
+	fi
+	
+	touch "$target$date/.backup"
+
+# status operation
+elif [ "$1" = "--status" ]; then
+	echo "Current Backups:"
+	echo "================================"
+	count=0
+	for i in `ls $target`; do
+		if [ "$i" != "current" ]; then
+			
+			echo -n $i
+
+			if [ -e "$target$i/.backup" ]; then
+				echo " [last rsync]"
+			else
+				echo
+			fi
+
+			count=$(($count+1))
+		fi
+	done
+	echo "================================"
+	echo "Total backups: $count"
+
+	if [ `crontab -l | grep -c 'mybackup'` -gt 0 ]; then
+		echo "Automatically backup: on"
+	else
+		echo "Automatically backup: off"
+	fi
+
+# restore operation
+elif [ "$1" = "--restore" ]; then
+	
+	if [ $# -lt 2 ]; then
+		echo "USAGE: $ mybackup restore [backup_name]"
+		echo "To see the backup status, just type $ mybackup status, then chose the one you want."
+		exit 1
+	fi
+
+	if [ ! -e $target$2 ]; then
+		echo "Backup file dose not exist."
+		exit 1
+	fi
+
+	cp -r $target$2 ${backup%/*/}/
+	rm -rf $backup
+	mv ${backup%/*/}/$2 $backup
+
+	echo "Backup file $2 restored successfully."
+
+	for i in `ls $target`; do
+		if [ "$i" != "current" ]; then
+			if [ -e "$target$i/.backup" ]; then
+				rm "$target$i/.backup"
+			fi
+		fi
+	done
+
+	touch $target$2/.backup
+
+# clean operation
+elif [ "$1" = "--clean" ]; then
+	rm -rf $target
+
+# config operation
+elif [ "$1" = "--config" ]; then
+	echo "================================================="
+	echo "Configuration"
+	echo "-------------------------------------------------"
+	cat $config_file
+	echo "================================================="
+
+# automatic operation
+elif [ "$1" = "--automatic" ]; then
+	if [ $# -lt 2 ]; then
+		echo "USAGE: $ mybackup automatic [on|off]"
+		exit 1
+	fi
+
+	if [ "$2" != "on" ] && [ "$2" != "off" ]; then
+		echo "USAGE: $ mybackup automatic [on|off]"
+		exit 1
+	fi
+
+	cron="/tmp/crontab-mybackup.conf"
+	
+	if [ ! -e $cron ]; then
+		crontab -l > $cron
+	fi
+
+	crontab -l | grep -vi 'mybackup' > $cron
+	crontab $cron
+
+	if [ "$2" = "on" ]; then
+		echo "$minute $hour * * * /usr/local/bin/mybackup push" >> $cron
+		crontab $cron
+	fi
+
+	echo "The automatic backup status is turned to "$2"."
+
+# help operation
+elif [ "$1" = "--help" ]; then
+	general_usage
+
+else
+	general_usage
+fi
+	
