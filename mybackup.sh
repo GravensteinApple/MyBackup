@@ -62,7 +62,7 @@ if [ "$1" = "push" ]; then
 
 	if [ $count_backup -gt $number ]; then
 		for i in `ls $target`; do
-			rm -rf $i
+			rm -rf $target$i
 			echo "Backup file on $i has been removed because it reaches the limit."
 			break
 		done
