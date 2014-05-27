@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # settings and prework
-source "/home/leo/documents/mybackup/mybackup.conf"
+source "/home/leo/Documents/MyBackup/mybackup.conf"
 
 if [ ${backup%*/} = $backup ]; then
 	backup=${backup}/
