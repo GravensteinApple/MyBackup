@@ -1,4 +1,4 @@
 MyBackup
 ========
 
-A small tool to backup your files in linux.
+A small tool used to backup your files in linux.
