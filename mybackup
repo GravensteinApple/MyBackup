@@ -46,7 +46,7 @@ general_usage()
 	echo "--help"
 	echo "--------------------------------------------------------"
 	echo "For more details"
-	echo "Read the documentation in /usr/local/share/doc/mybackup/"
+	echo "Read the documentation in /usr/local/share/doc/MyBackup/"
 	echo "========================================================"
 }
 
