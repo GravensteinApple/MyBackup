@@ -2,6 +2,7 @@
 
 # settings and prework
 config_file="/usr/local/etc/MyBackup/mybackup.conf"
+exclude_file="/usr/local/etc/MyBackup/exclude.conf"
 
 if [ ! -e "$config_file" ]; then
 	echo "Please set up your configuration in $config_file"
@@ -181,6 +182,9 @@ elif [ "$1" = "--config" ]; then
 	echo "Configuration"
 	echo "-------------------------------------------------"
 	cat $config_file
+	echo
+	echo "Exclude fils"
+	cat $exclude_file
 	echo "================================================="
 
 # automatic operation
