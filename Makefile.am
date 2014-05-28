@@ -11,7 +11,6 @@ install-data-am:
 	[ -d /usr/local/share/doc ] || mkdir /usr/local/share/doc
 	[ -d /usr/local/share/doc/MyBackup ] || mkdir /usr/local/share/doc/MyBackup
 	cp doc/MyBackup.html /usr/local/share/doc/MyBackup/
-	cp doc/MyBackup.pdf /usr/local/share/doc/MyBackup/
 
 uninstall:
 	[ -f /usr/local/bin/mybackup ] && rm -rf /usr/local/bin/mybackup
