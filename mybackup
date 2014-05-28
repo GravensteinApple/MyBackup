@@ -42,7 +42,7 @@ general_usage()
 	echo "--restore [backup_name]"
 	echo "--clean"
 	echo "--config"
-	echo "--automatic [on|off]"
+	echo "--automatic [on:off]"
 	echo "--help"
 	echo "--------------------------------------------------------"
 	echo "For more details"
@@ -175,6 +175,7 @@ elif [ "$1" = "--restore" ]; then
 # clean operation
 elif [ "$1" = "--clean" ]; then
 	rm -rf $target
+	echo "All the backup files have been removed."
 
 # config operation
 elif [ "$1" = "--config" ]; then
@@ -183,19 +184,20 @@ elif [ "$1" = "--config" ]; then
 	echo "-------------------------------------------------"
 	cat $config_file
 	echo
-	echo "Exclude fils"
+	echo "-------------------------------------------------"
+	echo "Exclude files"
 	cat $exclude_file
 	echo "================================================="
 
 # automatic operation
 elif [ "$1" = "--automatic" ]; then
 	if [ $# -lt 2 ]; then
-		echo "USAGE: $ mybackup automatic [on|off]"
+		echo "USAGE: $ mybackup automatic [on:off]"
 		exit 1
 	fi
 
 	if [ "$2" != "on" ] && [ "$2" != "off" ]; then
-		echo "USAGE: $ mybackup automatic [on|off]"
+		echo "USAGE: $ mybackup automatic [on:off]"
 		exit 1
 	fi
 
@@ -209,7 +211,7 @@ elif [ "$1" = "--automatic" ]; then
 	crontab $cron
 
 	if [ "$2" = "on" ]; then
-		echo "$minute $hour * * * /usr/local/bin/mybackup push" >> $cron
+		echo "$minute $hour * * * /usr/local/bin/mybackup --push" >> $cron
 		crontab $cron
 	fi
 
