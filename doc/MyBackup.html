@@ -1,0 +1,128 @@
+<html>
+<head>
+<title>MyBackup</title>
+<style type="text/css">
+<!--
+body {color: black;  background:"#FFCC99";  }
+div.p { margin-top: 7pt;}
+td div.comp { margin-top: -0.6ex; margin-bottom: -1ex;}
+td div.comb { margin-top: -0.6ex; margin-bottom: -.6ex;}
+td div.norm {line-height:normal;}
+td div.hrcomp { line-height: 0.9; margin-top: -0.8ex; margin-bottom: -1ex;}
+td.sqrt {border-top:2 solid black;
+    border-left:2 solid black;
+    border-bottom:none;
+    border-right:none;}
+    table.sqrt {border-top:2 solid black;
+        border-left:2 solid black;
+        border-bottom:none;
+        border-right:none;}
+        -->
+        </style>
+        </head>
+        <body>
+
+        <p><h1>MyBackup</h1>
+
+        Author: Leo Li <br>
+        Contact: leo.liyunzhu@pku.edu.cn <br>
+        Date: May 28, 2014 <br>
+
+        <p><h3>Abstract</h3>
+        MyBackup is a small tool used to backup your files in linux.
+
+        <p><a name="toc.1"><h1>1&nbsp;Introduction</h1>
+
+        The safety of our files is always a big part of our concern. In mac OS, an efficient tool called Time Machine is used to backup your files which is amazingly easy to use.<br>
+        <br>
+
+        Therefore, I write a program named MyBackup to come up with a solution for your files' safety in Linux. This tool not only support incremental backup, but can automatically run at a specific time per day. In addition, you can check your backup status whenever you like and the UI is user-friendly as well.
+
+        <p><a name="toc.2"><h1>2&nbsp;Installation</h1>
+
+        1. unzip the package. <br>
+        2. cd in the unzipped folder <br>
+        3. use command $ aclocal <br>
+        4. use command $ autoconf <br>
+        5. use command $ automake <font face=symbol>-</font><font face=symbol>-</font>add<font face=symbol>-</font>missing <br>
+        6. use command $ ./configure <br>
+        7. use cammand $ sudo make install <br> <br>
+        The executable program will be installed in /usr/local/bin/ <br>
+        The documentation will be installed in /usr/local/share/doc/MyBackup/ <br>
+        The configurtion files will be found in /usr/local/etc/MyBackup/
+
+        <p><a name="toc.3"><h1>3&nbsp;Uninstallation</h1>
+
+        1. cd in the original folder <br>
+        2. use command $ sudo make uninstall<br>
+        3. then all the related files will gone
+
+        <p><a name="toc.4"><h1>4&nbsp;How to use</h1>
+
+        <p><a name="toc.4.1"><h2>4.1&nbsp;Configuration</h2>
+
+        Move into /usr/local/etc/Mybackup/, then you will find two conf files <br>
+        One is named mybackup.conf which can be modified as your prefer <br>
+        The other one named exclude.conf is a list of files you do not like to backup, one <strong>relative path</strong> per line.
+
+        <p><a name="toc.4.2"><h2>4.2&nbsp;Usage</h2>
+
+        <p><a name="toc.4.2.1"><h3>&emsp;4.2.1&nbsp;mybackup --help</h3>
+
+        &emsp;Get the help page.
+
+        <p><a name="toc.4.2.2"><h3>&emsp;4.2.2&nbsp;mybackup --push</h3>
+
+        &emsp;Create a backup file of your "backup" to your "target".<br>
+        &emsp;Pay attention that if the number of the backups surpass the limit, the earliest one will be removed.
+
+        <p><a name="toc.4.2.3"><h3>&emsp;4.2.3&nbsp;mybackup --status</h3>
+
+        &emsp;You will see the backup status: <br>
+        &emsp;1. the time you create a backup<br>
+        &emsp;2. which is your last sync<br>
+        &emsp;3. how many backups you have<br>
+        &emsp;4. the status of the automactic backup
+
+        <p><a name="toc.4.2.4"><h3>&emsp;4.2.4&nbsp;mybackup --config</h3>
+
+        &emsp;You can see the configuration you set. To reset it, get into /usr/local/etc/MyBackup to modify the configuration files.
+        
+        <p><a name="toc.4.2.5"><h3>&emsp;4.2.5&nbsp;mybackup --restore [backup_name]</h3>
+
+        &emsp;You can use this command to restore the backup you want. Use </br>
+        &emsp;$ mybackup <font face=symbol>-</font><font face=symbol>-</font>status </br>
+        &emsp;to find the backup name. <br> <br>
+        &emsp;For example: <br>
+        &emsp;$ mybackup --restore 2014-05-28T13_36_53
+
+        <p><a name="toc.4.2.6"><h3>&emsp;4.2.6&nbsp;mybackup --clean</h3>
+
+        &emsp;Clean all the backups
+
+        <p><a name="toc.4.2.7"><h3>&emsp;4.2.7&nbsp;mybackup --automatic [on:off]</h3>
+
+        &emsp;This command will let the automatically backup on or off.<br><br>
+        &emsp;To see the current automatic status, just type <br>
+        &emsp;$ mybackup <font face=symbol>-</font><font face=symbol>-</font>status<br>
+
+        &emsp;To see the time you set, just type <br>
+        &emsp;$mybackup --config
+
+        <hr>
+        <p><h1>Table Of Contents</h1>
+        <p><a href="#toc.1"><h2>1&nbsp;Introduction</h2></a>
+        <p><a href="#toc.2"><h2>2&nbsp;Installation</h2></a>
+        <p><a href="#toc.3"><h2>3&nbsp;Uninstallation</h2></a>
+        <p><a href="#toc.4"><h2>4&nbsp;How to use</h2></a>
+        <p><a href="#toc.4.1"><h3>4.1&nbsp;Configuration</h3></a>
+        <p><a href="#toc.4.2"><h3>4.2&nbsp;Usage</h3></a>
+        <p><a href="#toc.4.2.1"><h4>4.2.1&nbsp;mybackup --help</h4></a>
+        <p><a href="#toc.4.2.2"><h4>4.2.2&nbsp;mybackup --push</h4></a>
+        <p><a href="#toc.4.2.3"><h4>4.2.3&nbsp;mybackup --status</h4></a>
+        <p><a href="#toc.4.2.4"><h4>4.2.4&nbsp;mybackup --config</h4></a>
+        <p><a href="#toc.4.2.6"><h4>4.2.6&nbsp;mybackup --clean</h4></a>
+        <p><a href="#toc.4.2.7"><h4>4.2.7&nbsp;mybackup --automatic [on:off]</h4></a>
+        </body>
+        </html>
+

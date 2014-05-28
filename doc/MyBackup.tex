@@ -1,0 +1,101 @@
+\documentclass[a4paper]{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+
+\title{\textbf{MyBackup}}
+
+\author{Leo Li}
+
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+MyBackup is a small tool used to backup your files in linux.
+\end{abstract}
+
+\section{Introduction}
+
+The safety of our files is always a big part of our concern. In mac OS, an efficient tool called Time Machine is used to backup your files which is amazingly easy to use.\\\\
+        Therefore, I write a program named MyBackup to come up with a solution for your files' safety in Linux. This tool not only support incremental backup, but can automatically run at a specific time per day. In addition, you can check your backup status whenever you like and the UI is user-friendly as well.
+
+        \section{Installation}
+
+        1. unzip the package. \\
+            2. cd in the unzipped folder \\
+            3. use command \$ aclocal \\
+            4. use command \$ autoconf \\
+            5. use command \$ automake --add-missing \\
+            6. use command \$ ./configure \\
+            7. use cammand \$ sudo make install \\\\
+            The executable program will be installed in /usr/local/bin/ \\
+            The documentation will be installed in /usr/local/share/doc/MyBackup/ \\
+            The configurtion files will be found in /usr/local/etc/MyBackup/
+
+            \section{Uninstallation}
+
+            1. cd in the original folder \\
+                2. use command \$ sudo make uninstall\\
+                3. then all the related files will gone
+
+                \section{How to use}
+
+                \subsection{Configuration}
+
+                Move into /usr/local/etc/Mybackup/, then you will find two conf files, 
+                one is named mybackup.conf which can be modified as your prefer,
+                the other one named exclude.conf is a list of files you do not like to backup,
+                one \textbf{relative path} per line.
+
+                \subsection{Usage}
+
+                \subsubsection{mybackup --help}
+
+                Get the help page.
+
+                \subsubsection{mybackup --push}
+
+                Create a backup file of your "backup" to your "target".\\
+                    Pay attention that if the number of the backups surpass the limit, the earliest one will be removed.
+
+                    \subsubsection{mybackup --status}
+
+                    You will see the backup status: \\
+                        1. the time you create a backup\\
+                        2. which is your last sync\\
+                        3. how many backups you have\\
+                        4. the status of the automactic backup
+
+                        \subsubsection{mybackup --config}
+
+                        You can see the configuration you set. To reset it, get into /usr/local/etc/MyBackup to modify the configuration files.
+
+                        \subsubsection{mybackup --restore [backup\_name]}
+
+                        You can use this command to restore the backup you want. Use\\
+                            \$ mybackup --status\\
+                            to find the backup name. \\\\
+                            For example:\\
+                            \$ mybackup --restore 2014-05-28T13\_36\_53
+
+                            \subsubsection{mybackup --clean}
+
+                            Clean all the backups
+
+                            \subsubsection{mybackup --automatic [on:off]}
+
+                            This command will let the automatically backup on or off.\\
+                                To see the current automatic status, just type\\
+                                \$ mybackup --status\\
+                                To see the time you set, just type\\
+                                \$ mybackup --config
+
+                                \section{Contact me}
+                                leo.liyunzhu@pku.edu.cn
+
+                                \end{document}
