@@ -12,7 +12,8 @@ fi
 source $config_file
 
 if [ ! -e "$backup" ]; then
-	echo "Please check your file path, cuz I cannot locate the files related to this backup process."
+	echo "Please check your configuration files in /usr/local/etc/MyBackup/"
+	echo "cuz I cannot locate the files related to this backup process."
 	exit 1
 fi
 
